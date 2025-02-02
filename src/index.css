@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.app {
+  background-color: #fafafa;
+  font-family: 'Poppins', sans-serif;
+}
+
+.responsive-card {
+  width: 90%;
+}
+
+@media (min-width: 992px) {
+  .responsive-card {
+    width: 35%;
+  }
+}
+
+.search-input {
+  background-color: #F4F7FE !important;
+}
+
+.search-input:focus {
+  box-shadow: none !important;
+}
+
+.search-input::placeholder {
+  color: #BABABA !important;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background: #343a40;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: width 0.3s ease-in-out;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.sidebar .nav-link i {
+  font-size: 20px;
+  margin-right: 15px;
+}
+
+.sidebar.collapsed .nav-link i {
+  margin-right: 0;
+}
+
+.nav-link.active {
+  color: #68A8FF;
+}
+
+.sidebar .nav-link:hover {
+  background: #495057;
+}
+
+.sidebar .toggle-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.hamburger {
+  position: fixed;
+  top: 10px;
+  left: 15px;
+  background: none;
+  border: none;
+  color: #343a40;
+  font-size: 30px;
+  cursor: pointer;
+  z-index: 1050;
+}
+
+.overlay {
+  position: absolute;
+  top: 20;
+  bottom: 0;
+  right: 0;
+  width: calc(100% - 250px);
+  height: calc(100% - 65px);
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+  display: block;
+}
+
+@media (max-width: 991px) {
+  .sidebar {
+    left: -250px;
+  }
+
+  .sidebar.mobile-open {
+    left: 0;
+  }
+
+  .d-flex.flex-column {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  .container-fluid.navbar-brand {
+    left: 20px !important;
+  }
+  .search-group {
+    margin-left: 50px;
+  }
+}
+
+/* Navbar and content */
+.d-flex.flex-column {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+.sidebar.collapsed + .d-flex.flex-column {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
