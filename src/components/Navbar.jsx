@@ -2,7 +2,7 @@ import React from 'react'
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg bg-white border-bottom">
+    <nav className="navbar z-2 navbar-expand-lg bg-white border-bottom">
       <div className="container-fluid">
         <div className="navbar-brand">
           <form className="d-flex" role="search">

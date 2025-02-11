@@ -8,12 +8,18 @@ import branding from "../assets/branding.png";
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("Dashboard");
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const toggleMobileSidebar = () => {
     setIsCollapsed(false)
     setIsMobileOpen(!isMobileOpen);
+    if (!isMobileOpen) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
   }
 
   return (
@@ -22,7 +28,7 @@ const Sidebar = () => {
         <i className={`bi ${isMobileOpen ? "bi-x" : "bi-list"}`}></i>
       </button>
 
-      <div className={`sidebar ${isCollapsed ? "collapsed" : ""} ${isMobileOpen ? "mobile-open" : ""}`}>
+      <div className={`sidebar z-1 ${isCollapsed ? "collapsed" : ""} ${isMobileOpen ? "mobile-open" : ""}`}>
         <div className="d-flex align-items-center justify-content-between">
           {!isCollapsed && (
             <div className="d-flex justify-content-center align-items-center ms-3 mb-2">
@@ -38,19 +44,19 @@ const Sidebar = () => {
 
         <ul className="nav flex-column">
           {[
-            { name: "Dashboard", icon: "bi bi-grid", path: '/homepage' },
-            { name: "Properties", icon: "bi bi-card-checklist", path: '/properties' },
+            { name: "Dashboard", icon: "bi bi-grid", path: '/dashboard/homepage' },
+            { name: "Properties", icon: "bi bi-card-checklist", path: '/dashboard/properties' },
             { name: "Users", icon: "bi-people", path: '/dashboard/users' },
             { name: "Categories", icon: "bi-tag", path: '/dashboard/categories' },
             { name: "Admins", icon: "bi-person-badge", path: '/dashboard/admins' },
             { name: "Facilities", icon: "bi-tools", path: '/dashboard/facilities' },
             { name: "Conditions", icon: "bi-file-earmark-text", path: '/dashboard/conditions' },
             { name: "Type", icon: "bi-box", path: '/dashboard/types' },
-            { name: "Chats", icon: "bi-chat-dots", path: '/dashboard/chats' },
-            { name: "Notifications", icon: "bi-bell", path: '/dashboard/notifications' },
-            { name: "Ratings", icon: "bi-star", path: '/dashboard/ratings' },
-            { name: "Images", icon: "bi-image", path: '/dashboard/images' },
-            { name: "Favorites", icon: "bi-heart", path: '/dashboard/favorites' },
+            { name: "Chats", icon: "bi-chat-dots", path: '/dashboard/dashboard/chats' },
+            { name: "Notifications", icon: "bi-bell", path: '/dashboard/dashboard/notifications' },
+            { name: "Ratings", icon: "bi-star", path: '/dashboard/dashboard/ratings' },
+            { name: "Images", icon: "bi-image", path: '/dashboard/dashboard/images' },
+            { name: "Favorites", icon: "bi-heart", path: '/dashboard/dashboard/favorites' },
             { name: "Logout", icon: "bi-box-arrow-right", path: '/' },
           ].map((item, index) => (
             <li className="nav-item" key={index}>

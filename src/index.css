@@ -5,6 +5,10 @@
   font-family: 'Poppins', sans-serif;
 }
 
+.app p {
+  font-size: 10px;
+}
+
 .responsive-card {
   width: 90%;
 }
@@ -85,7 +89,7 @@
 }
 
 .hamburger {
-  position: fixed;
+  position: absolute;
   top: 10px;
   left: 15px;
   background: none;
@@ -140,4 +144,8 @@
 .sidebar.collapsed + .d-flex.flex-column {
   margin-left: 80px;
   width: calc(100% - 80px);
+}
+
+.require-symbol {
+  color: red;
 }

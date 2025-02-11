@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
 import logo from '../assets/logo.jpg'
 import branding from '../assets/branding.png'
@@ -11,9 +10,33 @@ const Login = ({ onLoginSuccess }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
 
+    async function checkAndSignInAnonymously() {
+        try {
+            const { data: session, error } = await supabase.auth.getSession();
+            if (error || !session) {
+                try {
+                    const { data, error } = await supabase.auth.signInAnonymously()
+                    if (!error) {
+                        console.log("Successfully signed in")
+                    } else {
+                        console.log(error)
+                    }
+                } catch (err) {
+                    console.log(err)
+                }
+            } else {
+                console.log("User is already signed in");
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setError(null);
+
+        checkAndSignInAnonymously();
 
         try {
             const { data: admin, error } = await supabase.rpc('verify_admin', {
@@ -40,23 +63,25 @@ const Login = ({ onLoginSuccess }) => {
         <div className='card responsive-card'>
             <h2 className='text-center mt-3'>Sign In</h2>
             <form className='m-4' onSubmit={handleLogin}>
-                <div class="mb-3">
-                    <label htmlFor="phone-number" class="form-label">Phone number</label>
+                <div className="mb-3">
+                    <label htmlFor="phone-number" className="form-label">Phone number</label>
                     <input
                         id='phone-number' 
                         type="tel" 
-                        class="form-control" 
+                        maxLength="9"
+                        inputMode="numeric"
+                        className="form-control" 
                         placeholder="Phone number" 
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         required />
                 </div>
-                <div class="mb-1">
-                    <label htmlFor="password" class="form-label">Password</label>
+                <div className="mb-1">
+                    <label htmlFor="password" className="form-label">Password</label>
                     <input 
                     id='password' 
                     type={showPassword ? 'text' : 'password'} 
-                    class="form-control" 
+                    className="form-control" 
                     placeholder="Password" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
