@@ -73,8 +73,7 @@ function App() {
   };
   return (
       <div className='app'>
-        <PropertyPage />
-        {/* <Router>
+        <Router>
           <Routes>
             <Route
               path="/"
@@ -93,7 +92,7 @@ function App() {
             <Route path="admins/detail" element={<AdminDetail /> } />
             </Route>
           </Routes>
-        </Router> */}
+        </Router>
       </div>
   )
 }
