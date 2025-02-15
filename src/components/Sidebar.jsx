@@ -1,15 +1,16 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import logo from "../assets/logo.jpg";
 import branding from "../assets/branding.png";
 
-const Sidebar = () => {
+const Sidebar = ({ logout }) => {
+  const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("Dashboard");
+  const [activeLink, setActiveLink] = useState(location.pathname);
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const toggleMobileSidebar = () => {
@@ -21,6 +22,18 @@ const Sidebar = () => {
         document.body.style.overflow = "";
       }
   }
+
+  useEffect(() => {
+    setActiveLink(location.pathname);
+  }, [location.pathname]);
+
+  const handleItemClick = (item) => {
+    setActiveLink(item.path);
+    setIsMobileOpen(false);
+    if (item.name === "Logout") {
+      logout();
+    }
+  };
 
   return (
     <>
@@ -62,11 +75,8 @@ const Sidebar = () => {
             <li className="nav-item" key={index}>
               <Link
                 to={item.path} 
-                className={`nav-link ${activeLink === item.name ? "active" : ""}`} 
-                onClick={() => {
-                    setActiveLink(item.name)
-                    setIsMobileOpen(false)
-                    }} >
+                className={`nav-link ${activeLink === item.path ? "active" : ""}`} 
+                onClick={() => handleItemClick(item)} >
                 <i className={`bi ${item.icon}`}></i>
                 {!isCollapsed && <span>{item.name}</span>}
               </Link>

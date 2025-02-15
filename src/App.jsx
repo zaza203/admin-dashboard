@@ -15,20 +15,61 @@ import TypePage from './pages/TypePage';
 import FacilityPage from './pages/FacilityPage';
 import AdminPage from './pages/AdminPage';
 import AdminDetail from './pages/AdminDetail';
+import Homepage from './pages/Homepage';
 
 
 function App() {
+  const TIMEOUT_DURATION = 30 * 60 * 1000;
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem('authenticated') === 'true';
   });
 
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('authenticated');
+  };
+
   useEffect(() => {
-    localStorage.setItem('authenticated', isAuthenticated);
+    let timeoutId;
+
+    const resetTimer = () => {
+      if (isAuthenticated) {
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = setTimeout(handleLogout, TIMEOUT_DURATION);
+      }
+    };
+    const activityEvents = [
+      'mousedown',
+      'mousemove',
+      'keypress',
+      'scroll',
+      'touchstart'
+    ];
+
+    activityEvents.forEach(event => {
+      document.addEventListener(event, resetTimer);
+    });
+
+    resetTimer();
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      activityEvents.forEach(event => {
+        document.removeEventListener(event, resetTimer);
+      });
+    };
+  }, [isAuthenticated, handleLogout]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      localStorage.setItem('authenticated', 'true');
+    } else {
+      localStorage.removeItem('authenticated');
+    }
   }, [isAuthenticated]);
 
   const handleLoginSuccess = () => {
     setIsAuthenticated(true);
-    localStorage.setItem('authenticated', 'true');
   };
   return (
       <div className='app'>
@@ -36,9 +77,10 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login onLoginSuccess={handleLoginSuccess} />}
+              element={isAuthenticated ? <Navigate to="/dashboard/homepage" /> : <Login onLoginSuccess={handleLoginSuccess} />}
             />
-            <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}>
+            <Route path="/dashboard" element={isAuthenticated ? <Dashboard logout={handleLogout}/> : <Navigate to="/" />}>
+            <Route path="homepage" element={<Homepage /> } />
             <Route path="properties" element={<PropertyPage /> } />
             <Route path="properties/detail" element={<PropertyDetail /> } />
             <Route path='users' element={<UserPage />} />

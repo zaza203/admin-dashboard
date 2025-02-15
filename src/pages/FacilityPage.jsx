@@ -1,19 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import supabase from '../services/supabaseClient'
 import GenericPage from "../components/GenericPage";
 
 const FacilityPage = () => {
+  const [facilities, setFacilities] = useState([])
 
-  const facilities = [
-    { id: 1, name: "Luxury Apartment" },
-    { id: 2, name: "Villa" },
-  ];
+  useEffect(() => {
+    async function fetchFacilities() {
+      const cachedFacilities = localStorage.getItem("facilities");
+      const cacheTime = localStorage.getItem("cacheTime");
+
+      if (cachedFacilities && cacheTime) {
+        const timeDifference = (Date.now() - parseInt(cacheTime, 10)) / 1000;
+        if (timeDifference < 600) {
+          setFacilities(JSON.parse(cachedFacilities));
+          return;
+        }
+      }
+
+      const { data, error } = await supabase.from("facilities").select("id, name");
+
+      if (error) {
+        console.error("Error fetching facilities:", error);
+        return;
+      }
+
+      setFacilities(data || []);
+
+      localStorage.setItem(
+        "facilities",
+        JSON.stringify(data)
+      );
+      localStorage.setItem("cacheTime", Date.now().toString());
+    }
+
+    fetchFacilities();
+  }, []);
 
   return (
     <GenericPage
       title="Facility"
-      addModalId="addCategoryModal"
-      updateModalId="updateCategoryModal"
-      deleteModalId="deleteCategoryModal"
+      addModalId="addFacilityModal"
+      updateModalId="updateFacilityModal"
+      deleteModalId="deleteFacilityModal"
       items={facilities}
     />
   );

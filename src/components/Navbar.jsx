@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Navbar = () => {
+const Navbar = ({ logout }) => {
   return (
     <nav className="navbar z-2 navbar-expand-lg bg-white border-bottom">
       <div className="container-fluid">
@@ -33,7 +33,7 @@ const Navbar = () => {
             </li>
 
             <li className="nav-item">
-              <button className="btn btn-light">
+              <button className="btn btn-light" onClick={logout}>
                 <i className="bi bi-box-arrow-right"></i>
               </button>
             </li>

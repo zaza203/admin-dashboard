@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import logo from '../assets/logo.jpg'
 import branding from '../assets/branding.png'
@@ -10,25 +10,29 @@ const Login = ({ onLoginSuccess }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
 
+    useEffect(() => {
+        const clearSession = async () => {
+            const { error } = await supabase.auth.signOut();
+            if (error) console.log('Error clearing session:', error);
+        };
+        clearSession();
+    }, []);
+
     async function checkAndSignInAnonymously() {
         try {
-            const { data: session, error } = await supabase.auth.getSession();
-            if (error || !session) {
+            const { data: session } = await supabase.auth.getSession();
+            if (!session.session) {
                 try {
-                    const { data, error } = await supabase.auth.signInAnonymously()
-                    if (!error) {
-                        console.log("Successfully signed in")
-                    } else {
-                        console.log(error)
+                    const { data, error } = await supabase.auth.signInAnonymously();
+                    if (error) {
+                        console.log("Anonymous sign in error:", error);
                     }
                 } catch (err) {
-                    console.log(err)
+                    console.log("Error in anonymous sign in:", err);
                 }
-            } else {
-                console.log("User is already signed in");
             }
         } catch (error) {
-            console.log(error)
+            console.log("Session check error:", error);
         }
     }
 
@@ -36,25 +40,34 @@ const Login = ({ onLoginSuccess }) => {
         e.preventDefault();
         setError(null);
 
-        checkAndSignInAnonymously();
-
         try {
+            await supabase.auth.signOut();
+            
+            await checkAndSignInAnonymously();
+
             const { data: admin, error } = await supabase.rpc('verify_admin', {
                 phone_param: phone,
                 password_param: password
             });
-      
+
             if (error || !admin || admin.length === 0) {
                 setError("Wrong credentials");
                 toast.error(error ? error.message : "Wrong credentials");
                 return;
             }
-        
+
+            if (admin.length > 0) {
+                localStorage.setItem('admin', admin[0].id);
+            } else {
+                console.error("Admin array is empty!");
+            }
+            toast.success("Login successfully!")
             onLoginSuccess();
+            
         } catch (error) {
             toast.error("An error occurred while logging in");
             console.log("error executing rpc", error);
-          }
+        }
     }
 
       
