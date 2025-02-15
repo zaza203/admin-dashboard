@@ -1,6 +1,5 @@
 {
   "name": "admin-dashboard",
-  "homepage": "https://rentam-cameroon.github.io/admin-dashboard/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,9 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
