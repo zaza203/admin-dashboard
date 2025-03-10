@@ -52,6 +52,30 @@ export async function getUserMetadata() {
 export async function fetchWords(limit = 200) {
     try {
         const userMetadata = await getUserMetadata();
+
+        let { data: userPageData, error: userPageError } = await supabase
+            .from('user-page')
+            .select('page')
+            .eq('ip', userMetadata.ip)
+            .single();
+        
+        let currentPage = 1;
+        
+        if (userPageError && userPageError.code !== 'PGRST116') {
+            throw userPageError;
+        }
+        
+        if (userPageData) {
+            currentPage = userPageData.page;
+        } else {
+            const { error: insertError } = await supabase
+                .from('user-page')
+                .insert([{ ip: userMetadata.ip, page: 1 }]);
+            if (insertError) throw insertError;
+        }
+        
+        const start = (currentPage - 1) * limit;
+        const end = start + limit - 1;
     
         const { data: userContributedWords, error: fetchError } = await supabase
         .from('esimbi-pronunciation')
@@ -65,7 +89,7 @@ export async function fetchWords(limit = 200) {
         .from('english-word')
         .select('id, Word')
         .not('Word', 'in', `(${contributedWords.join(',')})`)
-        .range(0, limit - 1);
+        .range(start, end);
     
         if (error) throw error;
     
@@ -144,6 +168,14 @@ async function processRecording(wordId, word, blobs, userMetadata) {
         ]);
   
       if (insertError) throw insertError;
+
+      let nextPage = currentPage > 50 ? 1 : currentPage + 1;
+      const { error: updateError } = await supabase
+          .from('user-page')
+          .update({ page: nextPage })
+          .eq('ip', userMetadata.ip);
+      console.log("Updated user page")
+      if (updateError) throw updateError;
   
       return insertData;
     } catch (error) {
