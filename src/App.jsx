@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -16,68 +16,71 @@ import FacilityPage from './pages/FacilityPage';
 import AdminPage from './pages/AdminPage';
 import AdminDetail from './pages/AdminDetail';
 import Homepage from './pages/Homepage';
+import EsimbiEnglish from './pages/EsimbiEnglish';
 
 
 function App() {
-  const TIMEOUT_DURATION = 30 * 60 * 1000;
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem('authenticated') === 'true';
-  });
+  // const TIMEOUT_DURATION = 30 * 60 * 1000;
+  // const [isAuthenticated, setIsAuthenticated] = useState(() => {
+  //   return localStorage.getItem('authenticated') === 'true';
+  // });
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('authenticated');
-  };
+  // const handleLogout = () => {
+  //   setIsAuthenticated(false);
+  //   localStorage.removeItem('authenticated');
+  // };
 
-  useEffect(() => {
-    let timeoutId;
+  // useEffect(() => {
+  //   let timeoutId;
 
-    const resetTimer = () => {
-      if (isAuthenticated) {
-        if (timeoutId) clearTimeout(timeoutId);
-        timeoutId = setTimeout(handleLogout, TIMEOUT_DURATION);
-      }
-    };
-    const activityEvents = [
-      'mousedown',
-      'mousemove',
-      'keypress',
-      'scroll',
-      'touchstart'
-    ];
+  //   const resetTimer = () => {
+  //     if (isAuthenticated) {
+  //       if (timeoutId) clearTimeout(timeoutId);
+  //       timeoutId = setTimeout(handleLogout, TIMEOUT_DURATION);
+  //     }
+  //   };
+  //   const activityEvents = [
+  //     'mousedown',
+  //     'mousemove',
+  //     'keypress',
+  //     'scroll',
+  //     'touchstart'
+  //   ];
 
-    activityEvents.forEach(event => {
-      document.addEventListener(event, resetTimer);
-    });
+  //   activityEvents.forEach(event => {
+  //     document.addEventListener(event, resetTimer);
+  //   });
 
-    resetTimer();
+  //   resetTimer();
 
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-      activityEvents.forEach(event => {
-        document.removeEventListener(event, resetTimer);
-      });
-    };
-  }, [isAuthenticated, handleLogout]);
+  //   return () => {
+  //     if (timeoutId) clearTimeout(timeoutId);
+  //     activityEvents.forEach(event => {
+  //       document.removeEventListener(event, resetTimer);
+  //     });
+  //   };
+  // }, [isAuthenticated, handleLogout]);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      localStorage.setItem('authenticated', 'true');
-    } else {
-      localStorage.removeItem('authenticated');
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     localStorage.setItem('authenticated', 'true');
+  //   } else {
+  //     localStorage.removeItem('authenticated');
+  //   }
+  // }, [isAuthenticated]);
 
-  const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
-  };
+  // const handleLoginSuccess = () => {
+  //   setIsAuthenticated(true);
+  // };
   return (
       <div className='app'>
-        <Router>
+        < EsimbiEnglish />
+        {/* <Router>
           <Routes>
             <Route
               path="/"
-              element={isAuthenticated ? <Navigate to="/dashboard/homepage" /> : <Login onLoginSuccess={handleLoginSuccess} />}
+              // element={isAuthenticated ? <Navigate to="/dashboard/homepage" /> : <Login onLoginSuccess={handleLoginSuccess} />}
+              element={<EsimbiEnglish />}
             />
             <Route path="/dashboard" element={isAuthenticated ? <Dashboard logout={handleLogout}/> : <Navigate to="/" />}>
             <Route path="homepage" element={<Homepage /> } />
@@ -92,7 +95,7 @@ function App() {
             <Route path="admins/detail" element={<AdminDetail /> } />
             </Route>
           </Routes>
-        </Router>
+        </Router> */}
       </div>
   )
 }
