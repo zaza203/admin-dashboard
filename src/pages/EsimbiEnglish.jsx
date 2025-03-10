@@ -85,14 +85,14 @@ const handleRecordingAdded = (word, audioBlob) => {
       };
     });
   };
-  
-  const handleRecordingDeleted = (wordId, index) => {
+
+  const handleRecordingDeleted = (word, index) => {
     setRecordings(prevRecordings => {
-      const wordRecordings = [...(prevRecordings[wordId] || [])];
+      const wordRecordings = [...(prevRecordings[word.id]?.recordings || [])];
       wordRecordings.splice(index, 1);
       return {
         ...prevRecordings,
-        [wordId]: wordRecordings
+        [word.id]: { word: word, recordings: wordRecordings }
       };
     });
   };
@@ -186,7 +186,7 @@ const handleRecordingAdded = (word, audioBlob) => {
           word={words[currentWordIndex]} 
           recordings={recordings[words[currentWordIndex]?.id]?.recordings || []}
           onRecordingAdded={(blob) => handleRecordingAdded(words[currentWordIndex], blob)}
-          onRecordingDeleted={(index) => handleRecordingDeleted(words[currentWordIndex].id, index)}
+          onRecordingDeleted={(index) => handleRecordingDeleted(words[currentWordIndex], index)}
           registerActiveRecorder={registerActiveRecorder}
         />
       )}
