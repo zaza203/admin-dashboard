@@ -47,9 +47,21 @@ function AudioRecorder({ onRecordingComplete, registerActiveRecorder }) {
       setIsRecording(true);
       
       // Start the timer
+      // setRecordingTime(0)
       timerRef.current = setInterval(() => {
-        setRecordingTime(prev => prev + 1);
+        setRecordingTime(prev => {
+          if (prev + 1 >= 11) {
+            setIsRecording(false);
+            return 10;
+          }
+          return prev + 1
+        });
       }, 1000);
+
+
+      // timerRef.current = setInterval(() => {
+      //   setRecordingTime(prev => prev + 1);
+      // }, 1000);
     } catch (err) {
       console.error('Error accessing microphone:', err);
       alert('Could not access microphone. Please check permissions.');

@@ -176,7 +176,7 @@ const handleRecordingAdded = (word, audioBlob) => {
           </div>
           
           <div className="mb-3 d-flex">
-            <span style={{ fontSize: '12px'}}>Enter the audio recording for each Esimbi word. You can add multiple recordings for a word and skip those you don't know the translation for. Ensure to submit the audio at the end.</span>
+            <span className='fw-semibold fs-6'>Enter the audio recording for each Esimbi word. You can add multiple recordings for a word and skip those you don't know the translation for. Ensure to submit the audio at the end.</span>
           </div>
         </div>
       </div>
@@ -227,6 +227,7 @@ const handleRecordingAdded = (word, audioBlob) => {
           </button>
         </div>
       )}
+      <p style={{ fontSize: '12px'}} className='text-center p-3 text-muted fw-medium fst-italic'>If you don't know the exact translation of a word or you think is doesn't exit in the Esimbi dialect, please clcik on the NEXT WORD button to skip to the next word</p>
     </div>
   );
 }

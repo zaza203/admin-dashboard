@@ -9,7 +9,7 @@ function WordRecorder({ word, recordings = [], onRecordingAdded, onRecordingDele
       </div>
       <div className="card-body">
         <p className="lead text-center mb-4 fw-semibold" style={{ fontSize: '12px'}}>
-          Please record the Esimbi pronunciation for this word
+          Please record the Esimbi pronunciation for the word above
         </p>
         
         <AudioRecorder 
