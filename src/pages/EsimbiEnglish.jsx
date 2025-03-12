@@ -227,7 +227,7 @@ const handleRecordingAdded = (word, audioBlob) => {
           </button>
         </div>
       )}
-      <p style={{ fontSize: '12px'}} className='text-center p-3 text-muted fw-medium fst-italic'>If you don't know the exact translation of a word or you think is doesn't exit in the Esimbi dialect, please clcik on the NEXT WORD button to skip to the next word</p>
+      <p style={{ fontSize: '12px'}} className='text-center p-3 text-muted fw-medium fst-italic'>If you don't know the translation of a word or you think it doesn't exist in the Esimbi dialect, please click on the NEXT WORD button to skip to the next word</p>
     </div>
   );
 }
